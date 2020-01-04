@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Header from "./Header";
+import api from '../services/api';
 
 export default function ProductAdd() {
   const initialFormState = {
@@ -17,10 +18,12 @@ export default function ProductAdd() {
     setProduct({ ...product, [name]: value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(product);
+    const response = await api.post('products/add', product);
+
+    console.log(response);
   }
 
   return (
