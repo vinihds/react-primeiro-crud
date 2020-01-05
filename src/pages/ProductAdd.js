@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import Header from "./Header";
 import api from '../services/api';
 
 export default function ProductAdd() {
@@ -27,10 +26,8 @@ export default function ProductAdd() {
   }
 
   return (
-    <div className="product-container">
-      <Header />
-
-      <div className="card container">
+    <div className="container">
+      <div className="card">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
