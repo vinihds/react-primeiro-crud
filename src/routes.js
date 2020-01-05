@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 
 import ProductAdd from "./pages/ProductAdd";
+import ProductGet from "./pages/ProductGet";
 
 export default function Routes() {
   return (
@@ -25,6 +26,7 @@ export default function Routes() {
 
       <Switch>
         <Route path="/products/add" component={ProductAdd} />
+        <Route path="/products" exact component={ProductGet} />
       </Switch>
     </BrowserRouter>
   );
