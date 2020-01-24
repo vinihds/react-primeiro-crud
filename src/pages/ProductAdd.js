@@ -1,67 +1,45 @@
 import React, { useState } from "react";
 
-import api from '../services/api';
+import api from "../services/api";
+import * as Yup from "yup";
+import { Form, Input, Textarea } from "@rocketseat/unform";
+
+const schema = Yup.object().shape({
+  ProductName: Yup.string().required("Product Name is required"),
+  ProductDescription: Yup.string().required("Product Description is required"),
+  ProductPrice: Yup.number().required("Product Price is required")
+});
 
 export default function ProductAdd() {
-  const initialFormState = {
-    ProductName: "",
-    ProductDescription: "",
-    ProductPrice: ""
-  };
+  async function handleSubmit(data) {
+    const { ProductName, ProductDescription, ProductPrice } = data;
 
-  const [product, setProduct] = useState(initialFormState);
-
-  function handleInputChange(e) {
-    const { name, value } = e.target;
-
-    setProduct({ ...product, [name]: value });
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    const response = await api.post('products/add', product);
-
-    console.log(response);
+    api.post("products/add", { ProductName, ProductDescription, ProductPrice });
   }
 
   return (
     <div className="container">
       <div className="card">
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
+          <Form schema={schema} onSubmit={handleSubmit}>
             <div className="form-group">
               <label className="col-md-4">Product name</label>
-              <input
-                type="text"
-                name="ProductName"
-                className="form-control"
-                value={product.ProductName}
-                onChange={handleInputChange}
-              />
+              <Input type="text" name="ProductName" className="form-control" />
             </div>
 
             <div className="form-group">
               <label className="col-md-4">Product description</label>
-              <textarea
+              <Textarea
                 className="form-control"
                 cols="5"
                 rows="7"
                 name="ProductDescription"
-                value={product.ProductDescription}
-                onChange={handleInputChange}
-              ></textarea>
+              ></Textarea>
             </div>
 
             <div className="form-group">
               <label className="col-md-4">Product price</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ProductPrice"
-                value={product.ProductPrice}
-                onChange={handleInputChange}
-              />
+              <Input type="text" className="form-control" name="ProductPrice" />
             </div>
 
             <div className="form-group">
@@ -69,7 +47,7 @@ export default function ProductAdd() {
                 Create product
               </button>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
