@@ -1,27 +1,48 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import * as Yup from "yup";
 import { Form, Input, Textarea } from "@rocketseat/unform";
 
-const schema = Yup.object().shape({
-  ProductName: Yup.string().required("Product Name is required"),
-  ProductDescription: Yup.string().required("Product Description is required"),
-  ProductPrice: Yup.number().required("Product Price is required")
-});
+export default function ProductEdit({ match }) {
+  const { id } = match.params;
+  const [product, setProduct] = useState({});
 
-export default function ProductAdd() {
+  const schema = Yup.object().shape({
+    ProductName: Yup.string().required("Product Name is required"),
+    ProductDescription: Yup.string().required(
+      "Product Description is required"
+    ),
+    ProductPrice: Yup.string().required("Product Price is required")
+  });
+
+  useEffect(() => {
+    async function loadProduct() {
+      const response = await api.get(`/products/edit/${id}`);
+      const { data } = response;
+
+      setProduct({ ...data });
+    }
+
+    loadProduct();
+  }, []);
+
   async function handleSubmit(data) {
     const { ProductName, ProductDescription, ProductPrice } = data;
 
-    api.post("products/add", { ProductName, ProductDescription, ProductPrice });
+    const response = await api.post(`/products/update/${id}`, {
+      ProductName,
+      ProductDescription,
+      ProductPrice
+    });
+
+    setProduct(response.data);
   }
 
   return (
     <div className="container">
       <div className="card">
         <div className="card-body">
-          <Form schema={schema} onSubmit={handleSubmit}>
+          <Form schema={schema} onSubmit={handleSubmit} initialData={product}>
             <div className="form-group">
               <label className="col-md-4">Product Name</label>
               <Input type="text" name="ProductName" className="form-control" />
@@ -39,12 +60,12 @@ export default function ProductAdd() {
 
             <div className="form-group">
               <label className="col-md-4">Product Price</label>
-              <Input type="text" className="form-control" name="ProductPrice" />
+              <Input type="text" name="ProductPrice" className="form-control" />
             </div>
 
             <div className="form-group">
               <button type="submit" className="btn btn-primary">
-                Create product
+                Update product
               </button>
             </div>
           </Form>

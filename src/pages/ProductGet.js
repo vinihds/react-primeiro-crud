@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 import api from "../services/api";
 
-export default function ProductGet() {
+export default function ProductGet({history}) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -15,6 +14,10 @@ export default function ProductGet() {
 
     loadProducts();
   }, []);
+
+  function handleEdit(id) {
+    history.push(`/products/edit/${id}`);
+  }
 
   async function handleDelete(id) {
     await api.get(`/products/delete/${id}`);
@@ -40,12 +43,12 @@ export default function ProductGet() {
               <td>{product.ProductDescription}</td>
               <td>{product.ProductPrice}</td>
               <td>
-                <Link
-                  to={`/products/edit/${product._id}`}
+                <button
                   className="btn btn-primary"
+                  onClick={() => handleEdit(product._id)}
                 >
                   EDIT
-                </Link>
+                </button>
               </td>
               <td>
                 <button
