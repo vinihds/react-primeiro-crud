@@ -30,7 +30,7 @@ export default function ProductEdit({ match }) {
   async function handleSubmit(data) {
     const { ProductName, ProductDescription, ProductPrice } = data;
 
-    const response = await api
+    api
       .post(`/products/update/${id}`, {
         ProductName,
         ProductDescription,
@@ -38,8 +38,6 @@ export default function ProductEdit({ match }) {
       })
       .then(response => {
         toast.success(`${response.data}`);
-        
-        setProduct(response.data);
       })
       .catch(error => toast.error(`${error.response.statusText}`));
   }
