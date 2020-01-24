@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import * as Yup from "yup";
 import { Form, Input, Textarea } from "@rocketseat/unform";
+import { toast } from "react-toastify";
 
 export default function ProductEdit({ match }) {
   const { id } = match.params;
@@ -29,13 +30,18 @@ export default function ProductEdit({ match }) {
   async function handleSubmit(data) {
     const { ProductName, ProductDescription, ProductPrice } = data;
 
-    const response = await api.post(`/products/update/${id}`, {
-      ProductName,
-      ProductDescription,
-      ProductPrice
-    });
-
-    setProduct(response.data);
+    const response = await api
+      .post(`/products/update/${id}`, {
+        ProductName,
+        ProductDescription,
+        ProductPrice
+      })
+      .then(response => {
+        toast.success(`${response.data}`);
+        
+        setProduct(response.data);
+      })
+      .catch(error => toast.error(`${error.response.statusText}`));
   }
 
   return (

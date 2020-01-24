@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import ProductAdd from "./pages/ProductAdd";
 import ProductGet from "./pages/ProductGet";
@@ -8,6 +9,7 @@ import ProductEdit from "./pages/ProductEdit";
 export default function Routes() {
   return (
     <BrowserRouter>
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} autoClose={3000} />
       <div className="container-fluid">
         <nav className="navbar navbar-expand-sm bg-light">
           <ul className="navbar-nav">

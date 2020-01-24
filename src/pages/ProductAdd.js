@@ -3,6 +3,7 @@ import React from "react";
 import api from "../services/api";
 import * as Yup from "yup";
 import { Form, Input, Textarea } from "@rocketseat/unform";
+import { toast } from "react-toastify";
 
 const schema = Yup.object().shape({
   ProductName: Yup.string().required("Product Name is required"),
@@ -14,7 +15,14 @@ export default function ProductAdd() {
   async function handleSubmit(data) {
     const { ProductName, ProductDescription, ProductPrice } = data;
 
-    api.post("products/add", { ProductName, ProductDescription, ProductPrice });
+    await api
+      .post("products/add", {
+        ProductName,
+        ProductDescription,
+        ProductPrice
+      })
+      .then(response => toast.success(`${response.data.Product}`))
+      .catch(error => toast.error(`${error.response.statusText}`));
   }
 
   return (

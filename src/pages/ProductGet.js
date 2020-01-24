@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 import api from "../services/api";
 
-export default function ProductGet({history}) {
+export default function ProductGet({ history }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -20,9 +21,13 @@ export default function ProductGet({history}) {
   }
 
   async function handleDelete(id) {
-    await api.get(`/products/delete/${id}`);
-
-    setProducts(products.filter(product => product._id !== id));
+    api
+      .get(`/products/delete/${id}`)
+      .then(response => {
+        toast.success(`${response.data}`);
+        setProducts(products.filter(product => product._id !== id));
+      })
+      .catch(error => toast.error(`${error.response.statusText}`));
   }
 
   return (
